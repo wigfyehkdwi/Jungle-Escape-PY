@@ -14,7 +14,7 @@ public class Jump : MonoBehaviour
     public bool isGrounded;
     public bool facingFakePlatform;
     public float distToGround = 0.15f;
-    public float distToPlatform = 1.5f;
+    public float distToPlatform = 3f;
 
     void Start()
     {
@@ -26,11 +26,14 @@ public class Jump : MonoBehaviour
     {
         isGrounded = Physics.Raycast(transform.position, Vector3.down, distToGround);
         Debug.DrawRay(transform.position, Vector3.down * distToGround, Color.red);
-        facingFakePlatform = Physics.Raycast(transform.position, transform.forward, distToGround, 1 << 8);
-        Debug.DrawRay(transform.position, transform.forward * distToGround, Color.blue);
+        facingFakePlatform = Physics.Raycast(transform.position, transform.forward, distToPlatform, 1 << 8);
+        Debug.DrawRay(transform.position, transform.forward * distToPlatform, Color.blue);
+
+        if (facingFakePlatform) Debug.LogWarning("Be careful!");
+        else Debug.Log("All clear!");
 
         //jump movement
-        if(Input.GetButtonDown("Jump") && isGrounded){
+        if (Input.GetButtonDown("Jump") && isGrounded){
             rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
         
